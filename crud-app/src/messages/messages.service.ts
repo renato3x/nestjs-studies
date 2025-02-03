@@ -1,27 +1,26 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Message } from './entities/message.entity';
 import { CreateMessageDto } from './dto/create-message.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { UpdateMessageDto } from './dto/update-message.dto';
 
 @Injectable()
 export class MessagesService {
-  private lastId: number = 1;
-  private messages: Message[] = [
-    {
-      id: 1,
-      text: 'Hello, how are you?',
-      from: 'John',
-      to: 'Doe',
-      read: false,
-      date: new Date(),
-    },
-  ];
+  constructor(
+    @InjectRepository(Message) private readonly messageRepository: Repository<Message>
+  ) {}
 
-  findAll(): Message[] {
-    return this.messages;
+  async findAll(): Promise<Message[]> {
+    return await this.messageRepository.find();
   }
 
-  findById(id: number): Message {
-    const message = this.messages.find((message) => message.id === id);
+  async findById(id: number): Promise<Message> {
+    const message = await this.messageRepository.findOne({
+      where: {
+        id,
+      },
+    });
 
     if (!message) {
       /*
@@ -40,39 +39,16 @@ export class MessagesService {
     return message;
   }
 
-  create(message: CreateMessageDto): Message {
-    this.lastId++;
-
-    const newMessage: Message = {
-      id: this.lastId,
-      ...message,
-      read: false,
-      date: new Date(),
-    };
-
-    this.messages.push(newMessage);
-
-    return newMessage;
+  async create(createMessageDto: CreateMessageDto): Promise<Message> {
+    const message = this.messageRepository.create(createMessageDto);
+    return await this.messageRepository.save(message);
   }
 
-  update(id: number, message: any) {
-    const messageIndex = this.messages.findIndex(
-      (message) => message.id === id,
-    );
-
-    if (messageIndex === -1) {
-      throw new NotFoundException('Message not found');
-    }
-
-    const databaseMessage = this.messages[messageIndex];
-
-    this.messages[messageIndex] = {
-      ...databaseMessage,
-      ...message,
-    };
+  async update(id: number, updateMessageDto: UpdateMessageDto): Promise<void> {
+    await this.messageRepository.update({ id }, updateMessageDto);
   }
 
-  delete(id: number) {
-    this.messages = this.messages.filter((message) => message.id !== id);
+  async delete(id: number): Promise<void> {
+    await this.messageRepository.delete({ id });
   }
 }

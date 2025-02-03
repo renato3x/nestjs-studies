@@ -19,6 +19,9 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@messages/*": ["./src/messages/*"]
-    }
+    },
+    "typeRoots": [
+      "./@types"
+    ]
   }
 }
