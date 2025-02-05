@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { MessagesModule } from '@messages/messages.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { PeopleModule } from '@people/people.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    MessagesModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DATABASE_HOST,
@@ -17,6 +17,8 @@ import { ConfigModule } from '@nestjs/config';
       autoLoadEntities: true,
       synchronize: process.env.ENVIRONMENT === 'dev',
     }),
+    MessagesModule,
+    PeopleModule,
   ],
   controllers: [],
   providers: [],

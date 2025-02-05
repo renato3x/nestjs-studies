@@ -18,7 +18,8 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@messages/*": ["./src/messages/*"]
+      "@messages/*": ["./src/messages/*"],
+      "@people/*": ["./src/people/*"],
     },
     "typeRoots": [
       "./@types"
