@@ -20,6 +20,7 @@
     "paths": {
       "@messages/*": ["./src/messages/*"],
       "@people/*": ["./src/people/*"],
+      "@common/*": ["./src/common/*"],
     },
     "typeRoots": [
       "./@types"

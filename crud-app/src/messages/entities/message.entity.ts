@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Person } from '@people/entities/person.entity';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'messages' })
 export class Message {
@@ -8,11 +9,13 @@ export class Message {
   @Column({ nullable: false })
   text: string;
 
-  @Column({ nullable: false })
-  from: string;
+  @ManyToOne(() => Person, { nullable: false, onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'from' })
+  from: Person;
 
-  @Column({ nullable: false })
-  to: string;
+  @ManyToOne(() => Person, { nullable: false, onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'to' })
+  to: Person;
 
   @Column({ default: false, nullable: false })
   read: boolean;

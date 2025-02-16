@@ -4,15 +4,29 @@ import { CreateMessageDto } from './dto/create-message.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UpdateMessageDto } from './dto/update-message.dto';
+import { PeopleService } from '@people/people.service';
+import { Person } from '@people/entities/person.entity';
 
 @Injectable()
 export class MessagesService {
   constructor(
-    @InjectRepository(Message) private readonly messageRepository: Repository<Message>
+    @InjectRepository(Message)
+    private readonly messageRepository: Repository<Message>,
+    private readonly peopleService: PeopleService,
   ) {}
 
-  async findAll(): Promise<Message[]> {
-    return await this.messageRepository.find();
+  async findAll(limit = 10, offset = 0): Promise<Message[]> {
+    return await this.messageRepository.find({
+      skip: offset,
+      take: limit,
+      relations: {
+        from: true,
+        to: true,
+      },
+      order: {
+        id: 'asc',
+      },
+    });
   }
 
   async findById(id: number): Promise<Message> {
@@ -20,6 +34,13 @@ export class MessagesService {
       where: {
         id,
       },
+      relations: {
+        from: true,
+        to: true,
+      },
+      order: {
+        id: 'asc',
+      }, 
     });
 
     if (!message) {
@@ -40,7 +61,37 @@ export class MessagesService {
   }
 
   async create(createMessageDto: CreateMessageDto): Promise<Message> {
-    const message = this.messageRepository.create(createMessageDto);
+    let sender: Person;
+    let receiver: Person;
+    
+    try {
+      sender = await this.peopleService.findById(createMessageDto.senderId);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException('Sender not found');
+      }
+
+      throw error;
+    }
+
+    try {
+      receiver = await this.peopleService.findById(createMessageDto.receiverId);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException('Receiver not found');
+      }
+
+      throw error;
+    }
+
+    const data = {
+      from: sender,
+      to: receiver,
+      text: createMessageDto.text,
+    }
+
+    const message = this.messageRepository.create(data);
+
     return await this.messageRepository.save(message);
   }
 

@@ -5,12 +5,37 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Person } from './entities/person.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { PublicPersonDto } from './dto/public-person.dto';
-import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class PeopleService {
-  constructor(@InjectRepository(Person) private readonly personRepository: Repository<Person>) {}
+  constructor(
+    @InjectRepository(Person)
+    private readonly personRepository: Repository<Person>
+  ) {}
+
+  async findAll(): Promise<Person[]> {
+    const people = await this.personRepository.find({
+      order: {
+        id: 'asc',
+      },
+    });
+
+    return people;
+  }
+
+  async findById(id: number): Promise<Person> {
+    const person = await this.personRepository.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (!person) {
+      throw new NotFoundException('Person not found');
+    }
+
+    return person;
+  }
 
   async create(createPersonDto: CreatePersonDto): Promise<Person> {
     await this.throwErrorIfPersonWithEmailAlreadyExists(createPersonDto.email);
@@ -19,22 +44,7 @@ export class PeopleService {
     const person = this.personRepository.create(createPersonDto);
     const savedPerson = this.personRepository.save(person);
 
-    return plainToInstance(PublicPersonDto, savedPerson, { excludeExtraneousValues: true });
-  }
-
-  async findAll(): Promise<PublicPersonDto[]> {
-    const people = await this.personRepository.find();
-    return plainToInstance(PublicPersonDto, people, { excludeExtraneousValues: true });
-  }
-
-  async findOne(id: number): Promise<PublicPersonDto> {
-    const person = await this.personRepository.findOne({ where: { id } });
-
-    if (!person) {
-      throw new NotFoundException('Person not found');
-    }
-
-    return plainToInstance(PublicPersonDto, person, { excludeExtraneousValues: true });
+    return savedPerson;
   }
 
   async update(id: number, updatePersonDto: UpdatePersonDto): Promise<void> {
@@ -49,13 +59,17 @@ export class PeopleService {
     await this.personRepository.update({ id }, updatePersonDto);
   }
 
-  async remove(id: number): Promise<void> {
-    await this.personRepository.delete({ id });
+  async delete(id: number): Promise<void> {
+    await this.personRepository.delete({
+      id,
+    });
   }
 
   async throwErrorIfPersonWithEmailAlreadyExists(email: string): Promise<void> {
     const person = await this.personRepository.findOne({
-      where: { email },
+      where: {
+        email,
+      },
     });
 
     if (person) {

@@ -1,6 +1,4 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { IsBoolean, IsOptional } from 'class-validator';
-import { CreateMessageDto } from './create-message.dto';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
 
 /**
  * PartialType is a utility function in NestJS that creates a new type
@@ -9,8 +7,14 @@ import { CreateMessageDto } from './create-message.dto';
  * not all fields are required.
  */
 
-export class UpdateMessageDto extends PartialType(CreateMessageDto) {
+export class UpdateMessageDto {
   @IsBoolean()
   @IsOptional()
   readonly read?: boolean;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(5)
+  readonly text: string;
 }

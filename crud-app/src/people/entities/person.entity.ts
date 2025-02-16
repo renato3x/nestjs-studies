@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Message } from "@messages/entities/message.entity";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'people' })
 export class Person {
@@ -13,6 +14,12 @@ export class Person {
 
   @Column({ nullable: false })
   password: string;
+
+  @OneToMany(() => Message, message => message.from)
+  messagesSent: Message[];
+
+  @OneToMany(() => Message, message => message.to)
+  messagesReceived: Message[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

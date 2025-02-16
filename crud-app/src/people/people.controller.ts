@@ -19,7 +19,7 @@ export class PeopleController {
 
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.peopleService.findOne(id);
+    return this.peopleService.findById(id);
   }
 
   @Put(':id')
@@ -31,6 +31,6 @@ export class PeopleController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param('id', ParseIntPipe) id: number) {
-    return this.peopleService.remove(id);
+    return this.peopleService.delete(id);
   }
 }

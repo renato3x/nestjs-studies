@@ -34,6 +34,7 @@ async function bootstrap() {
     transform: false, // try transform the data types
   }));
   app.setGlobalPrefix('api');
+  app.enableCors();
   await app.listen(process.env.PORT ?? 3000);
 }
 
