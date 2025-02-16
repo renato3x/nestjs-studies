@@ -6,10 +6,11 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
+  /* ParseIntPipe, */
   Post,
   Put,
   Query,
+  /*UseInterceptors,*/
   UsePipes,
 } from '@nestjs/common';
 import { MessagesService } from './messages.service';
@@ -18,6 +19,10 @@ import { UpdateMessageDto } from './dto/update-message.dto';
 import { Message } from './entities/message.entity';
 import { PaginationDto } from '@common/dto/pagination.dto';
 import { ParseIntIdPipe } from '@common/pipes/parse-int-id.pipe';
+/* import { AddHeaderInterceptor } from '@common/interceptors/add-header.interceptor';
+import { TimingConnectionInterceptor } from '@common/interceptors/timing-connection.interceptor';
+import { ErrorHandlerInterceptor } from '@common/interceptors/error-handler.interceptor';
+import { SimpleCacheInterceptor } from '@common/interceptors/simple-cache.interceptor'; */
 
 
 
@@ -57,12 +62,14 @@ export class MessagesController {
    * status code for the method's HTTP verb.
    */
   @HttpCode(HttpStatus.OK)
+  // @UseInterceptors(AddHeaderInterceptor, TimingConnectionInterceptor, SimpleCacheInterceptor)
   @Get()
   async findAll(@Query() query: PaginationDto): Promise<Message[]> {
     return await this.messagesService.findAll(query.limit, query.offset);
   }
 
   @Get(':id')
+  // @UseInterceptors(ErrorHandlerInterceptor, TimingConnectionInterceptor, SimpleCacheInterceptor)
   async findById(@Param('id') id: number): Promise<Message> {
     return await this.messagesService.findById(id);
   }
