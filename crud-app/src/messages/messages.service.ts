@@ -40,7 +40,7 @@ export class MessagesService {
       },
       order: {
         id: 'asc',
-      }, 
+      },
     });
 
     if (!message) {
@@ -49,7 +49,7 @@ export class MessagesService {
        * like a Bad Request, Not Found or something like that
        */
       // throw new HttpException('Message not found', HttpStatus.NOT_FOUND);
-  
+
       /*
        * NotFoundException has the same idea from HttpException, but it is exclusive to the
        * status code 404 (NOT FOUND). Nest has specific classes for the most common errors
@@ -63,7 +63,7 @@ export class MessagesService {
   async create(createMessageDto: CreateMessageDto): Promise<Message> {
     let sender: Person;
     let receiver: Person;
-    
+
     try {
       sender = await this.peopleService.findById(createMessageDto.senderId);
     } catch (error) {
@@ -88,7 +88,7 @@ export class MessagesService {
       from: sender,
       to: receiver,
       text: createMessageDto.text,
-    }
+    };
 
     const message = this.messageRepository.create(data);
 

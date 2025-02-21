@@ -24,24 +24,22 @@ import { TimingConnectionInterceptor } from '@common/interceptors/timing-connect
 import { ErrorHandlerInterceptor } from '@common/interceptors/error-handler.interceptor';
 import { SimpleCacheInterceptor } from '@common/interceptors/simple-cache.interceptor'; */
 
-
-
 @Controller('messages')
 /**
  * The `@UsePipes` decorator in NestJS is used to apply pipes for data transformation and validation.
- * 
+ *
  * Pipes process the incoming request data before it reaches the route handler.
  * They can be used to validate, transform, or sanitize input.
- * 
+ *
  * - **Global usage in a controller:** Applies the pipe to all endpoints within the controller.
  * - **Per-route usage:** Applies the pipe only to a specific endpoint.
- * 
+ *
  * Example:
- * 
+ *
  * @UsePipes(new ValidationPipe()) // Applied to all endpoints
  * @Controller('users')
  * export class UsersController {
- *   
+ *
  *   @UsePipes(new ValidationPipe()) // Applied only to this method
  *   @Post()
  *   create(@Body() createUserDto: CreateUserDto) {
@@ -49,7 +47,7 @@ import { SimpleCacheInterceptor } from '@common/interceptors/simple-cache.interc
  *   }
  * }
  *
- * 
+ *
  * This ensures that incoming data follows the expected format before being processed.
  */
 @UsePipes(ParseIntIdPipe)

@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,7 +14,7 @@ import * as bcrypt from 'bcrypt';
 export class PeopleService {
   constructor(
     @InjectRepository(Person)
-    private readonly personRepository: Repository<Person>
+    private readonly personRepository: Repository<Person>,
   ) {}
 
   async findAll(): Promise<Person[]> {
@@ -49,7 +53,9 @@ export class PeopleService {
 
   async update(id: number, updatePersonDto: UpdatePersonDto): Promise<void> {
     if (updatePersonDto.email) {
-      await this.throwErrorIfPersonWithEmailAlreadyExists(updatePersonDto.email);
+      await this.throwErrorIfPersonWithEmailAlreadyExists(
+        updatePersonDto.email,
+      );
     }
 
     if (updatePersonDto.password) {
