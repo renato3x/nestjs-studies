@@ -10,7 +10,7 @@ import {
   Post,
   Put,
   Query,
-  UseGuards,
+  /* UseGuards, */
   /* UseInterceptors, */
   /*UseInterceptors,*/
   UsePipes,
@@ -21,7 +21,7 @@ import { UpdateMessageDto } from './dto/update-message.dto';
 import { Message } from './entities/message.entity';
 import { PaginationDto } from '@common/dto/pagination.dto';
 import { ParseIntIdPipe } from '@common/pipes/parse-int-id.pipe';
-import { IsAdminGuard } from '@common/guards/is-admin.guard';
+/* import { IsAdminGuard } from '@common/guards/is-admin.guard'; */
 // import { AuthTokenInterceptor } from '@common/interceptors/auth-token.interceptor';
 /* import { AddHeaderInterceptor } from '@common/interceptors/add-header.interceptor';
 import { TimingConnectionInterceptor } from '@common/interceptors/timing-connection.interceptor';
@@ -56,7 +56,7 @@ import { SimpleCacheInterceptor } from '@common/interceptors/simple-cache.interc
  */
 @UsePipes(ParseIntIdPipe)
 // @UseInterceptors(AuthTokenInterceptor)
-@UseGuards(IsAdminGuard)
+// @UseGuards(IsAdminGuard)
 export class MessagesController {
   constructor(private messagesService: MessagesService) {}
 

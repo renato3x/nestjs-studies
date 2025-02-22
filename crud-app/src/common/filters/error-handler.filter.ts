@@ -21,7 +21,7 @@ export class ErrorHandlerFilter<T extends HttpException>
 
     let message: string | string[] = '';
 
-    console.log(exceptionResponse);
+    // console.log(exceptionResponse);
 
     if (typeof exceptionResponse === 'string') {
       message = exceptionResponse;

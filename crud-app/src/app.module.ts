@@ -1,11 +1,13 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  /* MiddlewareConsumer, */ Module /* NestModule */,
+} from '@nestjs/common';
 import { MessagesModule } from '@messages/messages.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { PeopleModule } from '@people/people.module';
-import { SimpleMiddleware } from '@common/middlewares/simple.middleware';
+/* import { SimpleMiddleware } from '@common/middlewares/simple.middleware';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
-import { ErrorHandlerFilter } from '@common/filters/error-handler.filter';
+import { ErrorHandlerFilter } from '@common/filters/error-handler.filter'; */
 /* import { IsAdminGuard } from '@common/guards/is-admin.guard'; */
 
 @Module({
@@ -33,17 +35,17 @@ import { ErrorHandlerFilter } from '@common/filters/error-handler.filter';
       you can set global filters in main.ts file using the `useGlobalFilters` function
       but you will not have the Nest's Dependency Injection in these filters
     */
-    {
+    /* {
       provide: APP_FILTER,
       useClass: ErrorHandlerFilter,
-    },
+    }, */
     /* {
       provide: APP_GUARD,
       useClass: IsAdminGuard,
     }, */
   ],
 })
-export class AppModule implements NestModule {
+export class AppModule /* implements NestModule */ {
   /* 
     This is how you can add global middlewares in your code
 
@@ -56,7 +58,7 @@ export class AppModule implements NestModule {
     you can set global filters in main.ts file using the `use` function
       but you will not have the Nest's Dependency Injection in these middlewares
   */
-  configure(consumer: MiddlewareConsumer) {
+  /* configure(consumer: MiddlewareConsumer) {
     consumer.apply(SimpleMiddleware).forRoutes('*');
-  }
+  } */
 }

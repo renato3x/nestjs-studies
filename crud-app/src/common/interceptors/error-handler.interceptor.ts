@@ -14,7 +14,7 @@ export class ErrorHandlerInterceptor implements NestInterceptor {
   intercept(_context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       catchError((error) => {
-        console.log('An error was intercepted');
+        // console.log('An error was intercepted');
         return throwError(() => {
           if (error instanceof HttpException) {
             return error;

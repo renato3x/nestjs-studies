@@ -14,13 +14,13 @@ export class SimpleCacheInterceptor implements NestInterceptor {
     const request = context.switchToHttp().getRequest();
 
     if (this.cache.has(request.url)) {
-      console.log(`returning data from cache ${request.url}`);
+      // console.log(`returning data from cache ${request.url}`);
       return of(this.cache.get(request.url));
     }
 
     return next.handle().pipe(
       tap((data) => {
-        console.log(`setting cache from ${request.url}`);
+        // console.log(`setting cache from ${request.url}`);
         this.cache.set(request.url, data);
       }),
     );
