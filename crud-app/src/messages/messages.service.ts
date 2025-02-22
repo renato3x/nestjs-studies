@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Message } from './entities/message.entity';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -48,13 +53,13 @@ export class MessagesService {
        * HttpException is a class from Nest that allows send an error response,
        * like a Bad Request, Not Found or something like that
        */
-      // throw new HttpException('Message not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('Message not found', HttpStatus.NOT_FOUND);
 
       /*
        * NotFoundException has the same idea from HttpException, but it is exclusive to the
        * status code 404 (NOT FOUND). Nest has specific classes for the most common errors
        */
-      throw new NotFoundException('Message not found');
+      // throw new NotFoundException('Message not found');
     }
 
     return message;
