@@ -33,6 +33,7 @@ export class ErrorHandlerFilter<T extends HttpException>
       message,
       timestamp: new Date().toISOString(),
       path: request.url,
+      status: statusCode,
     });
   }
 }

@@ -4,8 +4,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { PeopleModule } from '@people/people.module';
 import { SimpleMiddleware } from '@common/middlewares/simple.middleware';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { ErrorHandlerFilter } from '@common/filters/error-handler.filter';
+/* import { IsAdminGuard } from '@common/guards/is-admin.guard'; */
 
 @Module({
   imports: [
@@ -36,6 +37,10 @@ import { ErrorHandlerFilter } from '@common/filters/error-handler.filter';
       provide: APP_FILTER,
       useClass: ErrorHandlerFilter,
     },
+    /* {
+      provide: APP_GUARD,
+      useClass: IsAdminGuard,
+    }, */
   ],
 })
 export class AppModule implements NestModule {
