@@ -10,6 +10,7 @@ import {
   Post,
   Put,
   Query,
+  UseInterceptors,
   /*UseInterceptors,*/
   UsePipes,
 } from '@nestjs/common';
@@ -19,6 +20,7 @@ import { UpdateMessageDto } from './dto/update-message.dto';
 import { Message } from './entities/message.entity';
 import { PaginationDto } from '@common/dto/pagination.dto';
 import { ParseIntIdPipe } from '@common/pipes/parse-int-id.pipe';
+import { AuthTokenInterceptor } from '@common/interceptors/auth-token.interceptor';
 /* import { AddHeaderInterceptor } from '@common/interceptors/add-header.interceptor';
 import { TimingConnectionInterceptor } from '@common/interceptors/timing-connection.interceptor';
 import { ErrorHandlerInterceptor } from '@common/interceptors/error-handler.interceptor';
@@ -51,6 +53,7 @@ import { SimpleCacheInterceptor } from '@common/interceptors/simple-cache.interc
  * This ensures that incoming data follows the expected format before being processed.
  */
 @UsePipes(ParseIntIdPipe)
+@UseInterceptors(AuthTokenInterceptor)
 export class MessagesController {
   constructor(private messagesService: MessagesService) {}
 
