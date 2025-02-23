@@ -21,6 +21,8 @@ import { UpdateMessageDto } from './dto/update-message.dto';
 import { Message } from './entities/message.entity';
 import { PaginationDto } from '@common/dto/pagination.dto';
 import { ParseIntIdPipe } from '@common/pipes/parse-int-id.pipe';
+/* import { ReqUrl } from '@common/params/req-url.decorator'; */
+/* import { ReqInfo } from '@common/params/req-data.decorator'; */
 /* import { IsAdminGuard } from '@common/guards/is-admin.guard'; */
 // import { AuthTokenInterceptor } from '@common/interceptors/auth-token.interceptor';
 /* import { AddHeaderInterceptor } from '@common/interceptors/add-header.interceptor';
@@ -29,7 +31,7 @@ import { ErrorHandlerInterceptor } from '@common/interceptors/error-handler.inte
 import { SimpleCacheInterceptor } from '@common/interceptors/simple-cache.interceptor'; */
 
 @Controller('messages')
-/**
+/*
  * The `@UsePipes` decorator in NestJS is used to apply pipes for data transformation and validation.
  *
  * Pipes process the incoming request data before it reaches the route handler.
@@ -68,7 +70,13 @@ export class MessagesController {
   @HttpCode(HttpStatus.OK)
   // @UseInterceptors(AddHeaderInterceptor, TimingConnectionInterceptor, SimpleCacheInterceptor)
   @Get()
-  async findAll(@Query() query: PaginationDto): Promise<Message[]> {
+  async findAll(
+    @Query() query: PaginationDto,
+    /* @ReqUrl() url: string, */
+    /* @ReqInfo('headers') headers: any, */
+  ): Promise<Message[]> {
+    /* console.log(headers); */
+    /* console.log(url); */
     return await this.messagesService.findAll(query.limit, query.offset);
   }
 
